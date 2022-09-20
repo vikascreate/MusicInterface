@@ -1,8 +1,8 @@
 body{
     margin: 0;
+    overflow: auto;
 }
 .PlayLists{
-    background-color: aqua;
     margin: 0;
     padding-top: 20px;
     padding-left: 10px;
@@ -65,4 +65,11 @@ body{
 }
 .Test{
     display:flex
+}
+.abc{
+    flex-direction: column;
+    width: 100%;
+}
+::-webkit-scrollbar{
+    display: none;
 }

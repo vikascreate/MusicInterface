@@ -1,37 +1,75 @@
 import React from "react"
-import {v4 as uuid}from "uuid"
-import Button from '@mui/material/Button'
+import PauseIcon from '@mui/icons-material/Pause';
+import Stack from '@mui/material/Stack';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import AddIcon from '@mui/icons-material/Add';
+import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
+import LinearProgress from '@mui/material/LinearProgress';
 import Avatar from '@mui/material/Avatar';
 
+import Box from '@mui/material/Box';
 export default function SearchResults(props){
+  const [aud,setAud]=React.useState();
+  const [l,setL]=React.useState();
+  const [curId,setCurId]=React.useState()
+  const [play,setPlay]=React.useState()
+  
+  
      const SearchElements=props.CreateList.map((data) => {
-        //const dataTitle=data.album.title;
+      function toggle(link){
+        if(aud){
+          if(l===link)
+            {
+              if(play){
+              aud.pause()
+              setPlay(false)
+            }else{
+              aud.play()
+              setPlay(true)
+            }
+              return}
+              else{
+                aud.pause()
+                setPlay(false)
+                setL(link)
+                let audio=new Audio(link)
+        setAud(audio)
+        setCurId(data.id)
+        console.log(aud)
+        audio.play()
+        setPlay(true)
+        return
+              }
+        }
+        setL(link)
+        let audio=new Audio(link)
+        setAud(audio)
+        setCurId(data.id)
+        console.log(aud)
+        audio.play()
+        setPlay(true)
+        }
         return (
-            // <div key={uuid()} className="TitleCard ser">
-            // <h3 className='items'>{data.title}</h3>
-            // {/* <button onClick={() => props.handleClick(data.title)} className="addButton">Add</button> */}
-            // <Button variant="contained" sx={{m:2,marginTop:2,marginBottom:2}}  onClick={() => props.handleClick(data.title)}>Add</Button>
-            // </div>
-            <ListItem
+            <ListItem 
             key={data.id}
             secondaryAction={
-            //   <Checkbox
-            //     edge="end"
-            //     onChange={handleToggle(value)}
-            //     checked={checked.indexOf(value) !== -1}
-            //     inputProps={{ 'aria-labelledby': labelId }}
-            //   />
-            <Button variant="contained" 
-            sx={{m:2,marginTop:2,marginBottom:2}}  
-            onClick={() => props.handleClick(data.title)}>Add</Button>
-            // <Button variant="contained" 
-            // sx={{m:2,marginTop:2,marginBottom:2}}  
-            // onClick={() => data.artist.preview.play()}>Play</Button>
+            <div>
+            <IconButton color="success" aria-label="add an alarm"
+            sx={{m:1,marginTop:2,marginBottom:2}} 
+            onClick={() => toggle(data.preview)}>
+              {curId===data.id&&play?<PauseIcon/>:<PlayArrowIcon/>}
+              </IconButton>
+            <IconButton color="primary" aria-label="add an alarm" 
+             onClick={() => props.handleClick(data)}>
+              <AddIcon/>
+             </IconButton>
+           </div>
+           
             }
            
             disablePadding
@@ -49,10 +87,11 @@ export default function SearchResults(props){
         )
     })
     return(
-    //    <div className="SearchResults">
-    <List dense sx={{ width: '100%',  bgcolor: 'background.paper' }}>
-       <h1>Search Results:</h1>
+      <div className="abc">
+      <h1>Search Results:</h1>
+    <List dense sx={{ width: '100%',  bgcolor: 'background.paper',height:'4000'}}>
         {SearchElements}
     </List>
+    </div>
     );
 }
